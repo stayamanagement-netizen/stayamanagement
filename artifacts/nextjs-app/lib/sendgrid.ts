@@ -20,7 +20,6 @@ export async function sendEmail({ to, subject, html, text }: SendEmailOptions) {
     html,
     text: text || subject,
   };
-
   const response = await sgMail.send(msg);
   return response;
 }
@@ -32,48 +31,34 @@ export function baseEmailWrapper(content: string, preheader = "") {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Staya Management</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
-    body { margin: 0; padding: 0; background-color: #F0EBE3; font-family: 'Inter', Arial, sans-serif; }
-    * { box-sizing: border-box; }
-  </style>
 </head>
-<body>
+<body style="margin:0;padding:0;background-color:#F0EBE3;font-family:Arial,sans-serif;">
   ${preheader ? `<div style="display:none;max-height:0;overflow:hidden;color:#F0EBE3;">${preheader}</div>` : ""}
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F0EBE3;padding:32px 16px;">
     <tr>
       <td align="center">
         <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#FFFFFF;border-radius:8px;overflow:hidden;box-shadow:0 4px 24px rgba(44,30,15,0.10);">
-
-          <!-- HEADER -->
           <tr>
             <td style="background:linear-gradient(135deg,#2C1E0F 0%,#4A3520 100%);padding:40px 48px 32px;text-align:center;">
-              <p style="margin:0 0 6px;font-family:'Inter',Arial,sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#C9A84C;">LUXURY VILLA MANAGEMENT</p>
-              <h1 style="margin:0;font-family:'Playfair Display',Georgia,serif;font-size:32px;font-weight:700;color:#FFFFFF;letter-spacing:1px;">Staya Management</h1>
+              <p style="margin:0 0 6px;font-family:Arial,sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#C9A84C;">LUXURY VILLA MANAGEMENT</p>
+              <h1 style="margin:0;font-family:Georgia,serif;font-size:32px;font-weight:700;color:#FFFFFF;letter-spacing:1px;">Staya Management</h1>
               <div style="margin:16px auto 0;width:48px;height:2px;background:#C9A84C;"></div>
             </td>
           </tr>
-
-          <!-- BODY -->
           <tr>
             <td style="padding:48px 48px 32px;">
               ${content}
             </td>
           </tr>
-
-          <!-- FOOTER -->
           <tr>
             <td style="background:#2C1E0F;padding:32px 48px;text-align:center;">
               <div style="margin-bottom:16px;">
-                <a href="#" style="display:inline-block;margin:0 10px;font-family:'Inter',Arial,sans-serif;font-size:12px;color:#C9A84C;text-decoration:none;letter-spacing:1px;text-transform:uppercase;">Website</a>
-                <a href="#" style="display:inline-block;margin:0 10px;font-family:'Inter',Arial,sans-serif;font-size:12px;color:#C9A84C;text-decoration:none;letter-spacing:1px;text-transform:uppercase;">Instagram</a>
-                <a href="mailto:stayamanagement@gmail.com" style="display:inline-block;margin:0 10px;font-family:'Inter',Arial,sans-serif;font-size:12px;color:#C9A84C;text-decoration:none;letter-spacing:1px;text-transform:uppercase;">Contact</a>
+                <a href="mailto:stayamanagement@gmail.com" style="display:inline-block;margin:0 10px;font-family:Arial,sans-serif;font-size:12px;color:#C9A84C;text-decoration:none;letter-spacing:1px;text-transform:uppercase;">Contact Us</a>
               </div>
-              <p style="margin:0 0 8px;font-family:'Inter',Arial,sans-serif;font-size:12px;color:#8B7355;line-height:1.6;">Staya Management · Luxury Villa Rentals · Bali, Indonesia</p>
-              <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:11px;color:#5C4A32;">© ${new Date().getFullYear()} Staya Management. All rights reserved.</p>
+              <p style="margin:0 0 8px;font-family:Arial,sans-serif;font-size:12px;color:#8B7355;line-height:1.6;">Staya Management · Luxury Villa Rentals · Bali, Indonesia</p>
+              <p style="margin:0;font-family:Arial,sans-serif;font-size:11px;color:#5C4A32;">© ${new Date().getFullYear()} Staya Management. All rights reserved.</p>
             </td>
           </tr>
-
         </table>
       </td>
     </tr>
@@ -88,14 +73,14 @@ export function goldDivider() {
 
 export function detailRow(label: string, value: string) {
   return `<tr>
-    <td style="padding:10px 0;font-family:'Inter',Arial,sans-serif;font-size:13px;color:#8B7355;text-transform:uppercase;letter-spacing:0.8px;font-weight:500;width:45%;vertical-align:top;">${label}</td>
-    <td style="padding:10px 0;font-family:'Inter',Arial,sans-serif;font-size:14px;color:#2C1E0F;font-weight:500;vertical-align:top;">${value}</td>
+    <td style="padding:10px 0;font-family:Arial,sans-serif;font-size:12px;color:#8B7355;text-transform:uppercase;letter-spacing:0.8px;font-weight:600;width:45%;vertical-align:top;">${label}</td>
+    <td style="padding:10px 0;font-family:Arial,sans-serif;font-size:14px;color:#2C1E0F;font-weight:500;vertical-align:top;">${value}</td>
   </tr>`;
 }
 
 export function ctaButton(text: string, href: string) {
   return `<div style="text-align:center;margin:32px 0;">
-    <a href="${href}" style="display:inline-block;background:#C9A84C;color:#2C1E0F;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;padding:14px 36px;border-radius:2px;">${text}</a>
+    <a href="${href}" style="display:inline-block;background:#C9A84C;color:#2C1E0F;font-family:Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;padding:14px 36px;border-radius:2px;">${text}</a>
   </div>`;
 }
 
