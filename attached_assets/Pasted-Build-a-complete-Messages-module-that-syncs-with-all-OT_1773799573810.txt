@@ -1,0 +1,132 @@
+Build a complete Messages module that syncs with 
+all OTA platforms and links to villa bookings/guests.
+Same elegant beige and gold theme.
+
+1. ADMIN MESSAGES (/dashboard/admin/messages):
+
+   HEADER:
+   - Title "Messages"
+   - Unread count badge
+   - "Compose" button for direct messages
+
+   LEFT PANEL — Inbox list:
+   - Search bar
+   - Filter tabs: All / Unread / Airbnb / 
+     Booking.com / Vrbo / Expedia / Direct
+   - Each message row shows:
+     * Guest initials avatar (colored by OTA)
+     * Guest name
+     * Villa name
+     * Message preview (first 50 chars)
+     * OTA channel badge
+     * Time/date
+     * Unread blue dot
+     * Booking reference
+
+   RIGHT PANEL — Conversation view:
+   - Guest name + villa as header
+   - Booking details bar:
+     * Check-in / Check-out dates
+     * Booking reference
+     * OTA channel
+     * Payment status
+   - Chat bubbles:
+     * Guest messages on left (beige)
+     * Staff replies on right (gold)
+     * Sender name + role + timestamp
+     * OTA platform indicator
+   - Reply box at bottom:
+     * Text input
+     * "Send via [OTA name]" button
+     * Quick reply templates dropdown:
+       - "Thank you for your booking!"
+       - "Check-in instructions sent"
+       - "Your villa is ready"
+       - "Safe travels!"
+       - Custom templates
+     * AI Reply button (GuestWisely integration)
+   - When admin replies:
+     * Save to messages table
+     * sender_role = 'super_admin'
+     * is_read = true
+
+2. OTA MESSAGE SYNC:
+   
+   Create note in UI explaining sync:
+   "Messages from Airbnb, Booking.com, Vrbo and 
+   Expedia appear here automatically once iCal 
+   sync is configured. Direct messages can be 
+   sent and received through this inbox."
+
+   For each OTA platform show sync status:
+   - Airbnb: Connected/Disconnected
+   - Booking.com: Connected/Disconnected
+   - Vrbo: Connected/Disconnected
+   - Expedia: Connected/Disconnected
+
+   iCal note: "Full two-way messaging requires 
+   OTA API partner access. iCal sync imports 
+   bookings only. For full messaging sync, 
+   connect via Channel Manager API settings."
+
+3. LINK TO BOOKINGS:
+   Each message thread must be linked to:
+   - booking_id (from bookings table)
+   - villa_id (from villas table)
+   - guest profile (from profiles table)
+   
+   When viewing a message:
+   - "View Booking" button → opens booking detail
+   - "View Guest Profile" button
+   - Guest stay dates shown
+   - Payment status shown
+
+4. VILLA MANAGER MESSAGES (/dashboard/manager/messages):
+   - Same inbox but filtered to their villa only
+   - Can read ALL messages for their villa
+   - Can reply directly
+   - When manager replies:
+     * admin_notified = false (triggers admin badge)
+     * sender_role = 'villa_manager'
+   - Cannot see messages from other villas
+
+5. GUEST MESSAGES (/dashboard/guest/messages):
+   - Simple chat interface
+   - Only their own conversation
+   - Can send messages to villa team
+   - Messages saved with:
+     * sender_role = 'guest'
+     * booking_id linked automatically
+     * villa_id linked automatically
+   - Shows "Delivered" / "Read" status
+
+6. MESSAGE NOTIFICATIONS:
+   - Admin sidebar badge: total unread count
+   - Manager sidebar badge: unread for their villa
+   - Auto-refresh every 30 seconds
+   - New message → badge updates instantly
+
+7. MESSAGE TEMPLATES:
+   Admin can create/edit templates at 
+   /dashboard/admin/messages/templates:
+   - Template name
+   - Template body with variables:
+     {guest_name}, {villa_name}, 
+     {checkin_date}, {checkout_date}
+   - Save to a message_templates table
+
+8. DATABASE:
+   Make sure messages table has all needed columns.
+   Run this in Supabase if needed:
+   
+   alter table messages add column if not exists 
+   booking_id uuid references bookings(id);
+   alter table messages add column if not exists
+   sender_name text;
+   alter table messages add column if not exists
+   reply_to_id uuid references messages(id);
+
+9. Push to GitHub when done:
+   git add . && git commit -m "feat: complete messages module with OTA sync" && git push
+
+10. Fully responsive for iPad and desktop

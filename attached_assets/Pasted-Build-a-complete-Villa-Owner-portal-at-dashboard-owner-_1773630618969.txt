@@ -1,0 +1,79 @@
+Build a complete Villa Owner portal at /dashboard/owner
+with the same elegant beige and gold theme.
+
+This portal is for villa owners — they can ONLY see 
+their own villa's data. No income data visible to 
+villa managers.
+
+1. TOP NAVIGATION:
+   - "Staya Management" logo left
+   - Current date center
+   - Owner name + Logout right
+
+2. LEFT SIDEBAR:
+   - Dashboard (home)
+   - My Villa (building)
+   - Bookings (calendar) — view only
+   - Revenue & Reports (chart)
+   - Monthly Statements (document)
+   - Petty Cash (wallet) — totals only, no amounts
+   - Maintenance (tools) — status only
+   - Settings (gear)
+
+3. OWNER DASHBOARD — main page:
+   - Welcome message: "Welcome back, [Owner Name]"
+   - Villa name and location as subtitle
+   - 4 STAT CARDS:
+     * Revenue This Month (from payments table)
+     * Occupancy Rate % (from bookings)
+     * Upcoming Bookings (next 30 days)
+     * Pending Maintenance Issues (count only)
+   
+   - REVENUE CHART:
+     * Bar chart showing last 6 months revenue
+     * Fetch from payments table for their villa only
+   
+   - UPCOMING BOOKINGS TABLE:
+     * Check-in, Check-out, Nights, Amount, OTA, Status
+     * Next 5 bookings for their villa only
+     * NO guest personal details (just initials)
+   
+   - PETTY CASH SUMMARY:
+     * Show total petty cash spent this month
+     * Show by category (cleaning, maintenance, etc)
+     * NO individual amounts — totals only
+   
+   - MAINTENANCE STATUS:
+     * List open maintenance issues
+     * Show: Title, Category, Priority, Status
+     * NO costs visible
+
+4. MY VILLA PAGE at /dashboard/owner/villa:
+   - Villa details (read only — cannot edit)
+   - Photo gallery placeholder
+   - Seasonal rates (read only)
+   - OTA channels connected
+   - Amenities list
+
+5. REVENUE & REPORTS at /dashboard/owner/revenue:
+   - Monthly revenue breakdown
+   - Management fee deduction (20%)
+   - Petty cash deductions
+   - Maintenance cost deductions
+   - NET payout amount in gold
+   - Filter by month/year
+   - "Download Report" button (PDF coming later)
+
+6. MONTHLY STATEMENTS at /dashboard/owner/statements:
+   - List of all monthly statements
+   - Month, Year, Gross Revenue, Deductions, Net Payout
+   - Status badge: Draft / Sent / Paid
+   - View button for each statement
+
+7. PROTECT this route:
+   - If not logged in → redirect to /
+   - If role is not villa_owner → redirect to correct dashboard
+   - Owner can ONLY see data for villas linked to them 
+     via villa_owners table
+
+8. Fully responsive for iPad and desktop

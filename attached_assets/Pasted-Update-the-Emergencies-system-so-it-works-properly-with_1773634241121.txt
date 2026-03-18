@@ -1,0 +1,60 @@
+Update the Emergencies system so it works properly 
+with villa allocation and manager teams:
+
+1. ADMIN EMERGENCIES PAGE (/dashboard/admin/emergencies):
+   - Add villa filter dropdown at top
+     (show all villas, filter by selected villa)
+   - Each emergency card shows:
+     * 🚨 Alert type icon + type label
+     * Villa name + location
+     * Assigned managers for that villa (from villa_managers)
+     * Time since alert created
+     * Full description
+     * Status badge (Active/Acknowledged/Resolved)
+     * WHO acknowledged it and when
+     * WHO resolved it and when
+   - Actions:
+     * Acknowledge button (active alerts)
+     * Resolve button + resolution notes field
+     * Assign to manager button (dropdown of villa managers)
+   - Internal notes section:
+     * Admin and managers can add notes
+     * Shows who wrote each note + timestamp
+     * Like a conversation thread per emergency
+
+2. MANAGER EMERGENCIES VIEW (/dashboard/manager/emergencies):
+   - Shows ONLY emergencies for their assigned villa
+   - Same card layout but simplified
+   - Can add internal notes
+   - Can acknowledge
+   - Cannot resolve (admin only)
+   - Can see which other managers are assigned
+
+3. EMERGENCY INTERNAL NOTES:
+   Add a new table for this — create in Supabase:
+   
+   create table emergency_notes (
+     id uuid default gen_random_uuid() primary key,
+     emergency_id uuid references emergency_alerts(id),
+     written_by uuid references profiles(id),
+     written_by_name text,
+     written_by_role text,
+     note text not null,
+     created_at timestamp default now()
+   );
+   alter table emergency_notes enable row level security;
+   create policy "Authenticated users can manage emergency notes"
+   on emergency_notes for all
+   using (auth.role() = 'authenticated');
+
+4. REAL-TIME UPDATES:
+   - Use Supabase real-time subscription on emergency_alerts
+   - When new emergency comes in → instantly show 
+     red banner without page refresh
+   - When status changes → update badge count instantly
+
+5. Add Emergencies link to manager sidebar
+
+6. Emergency badge on sidebar:
+   - Admin: shows ALL active emergencies count
+   - Manager: shows only THEIR villa's active count

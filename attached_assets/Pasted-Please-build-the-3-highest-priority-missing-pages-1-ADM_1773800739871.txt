@@ -1,0 +1,84 @@
+Please build the 3 highest priority missing pages:
+
+1. ADMIN PETTY CASH (/dashboard/admin/petty-cash):
+   - View ALL petty cash submissions across ALL villas
+   - Filter by: Villa / Status / Category / Date range
+   - Summary cards:
+     * Total pending approval
+     * Total approved this month
+     * Total rejected
+     * Total spent by category
+   - Table columns:
+     * Date, Villa, Manager name, Category, 
+       Description, Amount, Receipt, Status, Actions
+   - Actions:
+     * Approve → updates status to 'approved'
+     * Reject → updates status to 'rejected' 
+       + optional rejection reason
+   - Receipt viewer — tap receipt to see photo
+   - Export to CSV button
+   - Add to admin sidebar as active link
+
+2. ADMIN MAINTENANCE (/dashboard/admin/maintenance):
+   - View ALL maintenance requests across ALL villas
+   - Filter by: Villa / Status / Priority / Category
+   - Summary cards:
+     * Open issues
+     * In Progress
+     * Resolved this month
+     * Urgent issues (highlighted red)
+   - Table columns:
+     * Date, Villa, Reported by, Title, Category,
+       Priority badge, Status, Est. Cost, Actions
+   - Priority badges:
+     * 🔴 Urgent — red
+     * 🟠 High — orange
+     * 🟡 Medium — yellow
+     * 🟢 Low — green
+   - Actions:
+     * View details → full maintenance record
+     * Assign → assign to a manager
+     * Update status → open/in_progress/resolved/closed
+     * Add note
+   - Detail modal shows:
+     * Full description
+     * Photos if uploaded
+     * Cost estimate vs actual
+     * Timeline of status changes
+     * Internal notes thread
+
+3. SETTINGS PAGES:
+   
+   Admin Settings (/dashboard/admin/settings):
+   - Profile section:
+     * Full name (editable)
+     * Email (read only)
+     * Change password
+     * Profile photo upload
+   - Company section:
+     * Company name: "Staya Management"
+     * Logo upload
+     * Primary currency
+     * Default management fee %
+     * Default timezone
+   - Notification preferences:
+     * Email on new booking toggle
+     * Email on new message toggle
+     * Email on emergency alert toggle
+     * Email on petty cash submission toggle
+   - Save button → updates profiles table
+
+   Manager Settings (/dashboard/manager/settings):
+   - Profile: name, email, change password, photo
+   - Notification preferences
+   - Save button
+
+   Owner Settings (/dashboard/owner/settings):
+   - Profile: name, email, change password, photo
+   - Notification preferences
+   - Save button
+
+4. Add all missing sidebar links
+
+5. Push to GitHub when done:
+   git add . && git commit -m "feat: admin petty cash, maintenance, settings pages" && git push

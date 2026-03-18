@@ -1,0 +1,81 @@
+Build the Villa Owner portal at /dashboard/owner
+with the same elegant beige and gold theme.
+
+IMPORTANT: Villa owners can ONLY see their own 
+villa data. They cannot see income of other villas
+or any villa manager data.
+
+1. OWNER DASHBOARD (/dashboard/owner):
+   - Top nav: "Staya Management" logo, date, 
+     owner name + Sign Out button
+   - Left sidebar:
+     * Dashboard
+     * My Villa
+     * Bookings (view only)
+     * Revenue & Reports
+     * Monthly Statements
+     * Petty Cash (totals only)
+     * Maintenance (status only)
+     * Settings
+
+   - Welcome: "Welcome back, [Owner Name]"
+   - Villa name and location as subtitle
+   
+   - 4 STAT CARDS:
+     * Revenue This Month
+     * Occupancy Rate %
+     * Upcoming Bookings (next 30 days)
+     * Open Maintenance Issues
+
+   - REVENUE CHART:
+     * Bar chart — last 6 months
+     * Fetch from payments table for their villa
+
+   - UPCOMING BOOKINGS TABLE:
+     * Check-in, Check-out, Nights, Amount, 
+       OTA channel, Status
+     * NO guest personal details shown
+     * Only their villa's bookings
+
+   - PETTY CASH SUMMARY:
+     * Total spent this month by category
+     * NO individual line items — totals only
+
+   - MAINTENANCE STATUS:
+     * Open issues list
+     * Title, Category, Priority, Status
+     * NO costs shown to owner
+
+2. MY VILLA PAGE (/dashboard/owner/villa):
+   - Villa details (READ ONLY — cannot edit)
+   - Villa name, location, bedrooms, capacity
+   - Seasonal rates (read only)
+   - OTA channels connected
+   - Spare bed availability
+
+3. REVENUE PAGE (/dashboard/owner/revenue):
+   - Monthly revenue breakdown
+   - Gross revenue
+   - Management fee (20%) deducted
+   - Petty cash deducted
+   - Maintenance costs deducted
+   - NET payout in gold — large and prominent
+   - Filter by month and year
+   - "Download Report" button (placeholder)
+
+4. STATEMENTS PAGE (/dashboard/owner/statements):
+   - List of monthly statements
+   - Month, Gross, Deductions, Net, Status
+   - Status: Draft / Sent / Paid
+   - View button per statement
+
+5. PROTECT this route:
+   - Not logged in → redirect to /
+   - Not villa_owner role → redirect to correct dashboard
+   - Can ONLY see their own villa data via villa_owners table
+
+6. After building push to GitHub so Vercel 
+   auto-deploys:
+   git add . && git commit -m "feat: villa owner portal" && git push
+
+7. Fully responsive for iPad and desktop

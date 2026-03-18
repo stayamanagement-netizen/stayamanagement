@@ -1,0 +1,69 @@
+Build a complete Payment Management system with 
+the same beige and gold theme. Include:
+
+1. PAGE: /dashboard/admin/payments
+   - Header: "Payments" with subtitle 
+     "Track and manage all villa payments"
+   - Summary cards at top:
+     * Total Collected This Month
+     * Pending Payments
+     * Overdue Payments (past due date, not paid)
+     * Upcoming Check-ins Unpaid (within 7 days)
+   
+   - PAYMENTS TABLE showing:
+     * Guest Name
+     * Villa
+     * Check-in Date
+     * Amount
+     * Type (deposit/balance/full)
+     * Method (Stripe/Bank Transfer)
+     * Due Date
+     * Status badge (pending/confirmed/overdue)
+     * Actions: Mark as Paid / Send Reminder / View
+
+   - Filter by: All / Pending / Confirmed / Overdue
+
+2. PAGE: /dashboard/admin/payments/rules
+   Per-villa payment configuration:
+   - Select villa dropdown
+   - Deposit percentage (e.g. 30%)
+   - Deposit due within X days of booking
+   - Balance due X days before check-in
+   - Payment methods (toggle Stripe / Bank Transfer)
+   - Auto reminder days (checkboxes: 14, 7, 3, 1 day before)
+   - Block check-in if unpaid (toggle)
+   - Bank account details section:
+     * Bank name
+     * Account name
+     * Account number
+     * SWIFT code
+   - Save button → saves to villa_payment_rules table
+
+3. PAYMENT ALLOCATION:
+   When a payment is marked as confirmed:
+   - Automatically calculate management fee (default 20%)
+   - Insert into payment_allocations table:
+     * gross_amount = payment amount
+     * management_fee_amount = gross x 20%
+     * net_owner_amount = gross - management fee
+   - Show allocation breakdown in payment detail view
+
+4. CHECK-IN PAYMENT ALERT:
+   On the main dashboard, add a warning section:
+   - Query bookings where check_in is within 7 days
+   - Cross-reference with payments table
+   - If no confirmed payment found → show red alert card
+   - Display: Guest name, Villa, Check-in date, 
+     Amount due, "Send Reminder" button
+
+5. SEND REMINDER button:
+   - Opens a modal with pre-written email template:
+     "Dear [Guest], your payment of $[amount] for 
+     [Villa] is due on [date]. Please complete 
+     payment to confirm your check-in."
+   - Send button → logs to payment_reminders table
+   - Mark reminder as sent
+
+6. Add "Payments" link in sidebar that works
+
+7. Fully responsive for iPad and desktop

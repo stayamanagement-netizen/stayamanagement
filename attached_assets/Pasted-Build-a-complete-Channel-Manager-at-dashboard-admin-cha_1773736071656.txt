@@ -1,0 +1,113 @@
+Build a complete Channel Manager at 
+/dashboard/admin/channel-manager
+with the same elegant beige and gold theme.
+
+1. CHANNEL MANAGER MAIN PAGE:
+
+   HEADER:
+   - Title "Channel Manager"
+   - Subtitle "Sync rates & availability across all OTAs"
+   - "Sync All Channels" gold button
+   - Last synced timestamp per channel
+
+   CHANNEL STATUS CARDS (4 cards):
+   Each card shows:
+   - Channel logo color & name
+   - Connection status (Connected/Disconnected)
+   - Green pulsing dot if connected
+   - Last sync time
+   - Bookings this month
+   - Revenue this month
+   - "Configure" button
+   - "Sync Now" button
+   - "Connect/Disconnect" toggle
+
+   Channels:
+   🔴 Airbnb
+   🔵 Booking.com
+   🟢 Vrbo
+   🟡 Expedia
+
+2. ICAL SYNC SECTION:
+   - Title "iCal Calendar Sync"
+   - Info note: "Connect your OTA calendars 
+     to automatically import bookings and 
+     block availability"
+   
+   For each villa show:
+   - Villa name
+   - Airbnb iCal URL input field
+   - Booking.com iCal URL input field
+   - Vrbo iCal URL input field
+   - Expedia iCal URL input field
+   - "Save URLs" button → saves to villas table
+   - "Sync Now" button → triggers iCal import
+   - Last synced timestamp
+   - Status: ✅ Synced / ⚠️ Error / 🔄 Syncing
+
+3. RATE MANAGEMENT TABLE:
+   - Title "Rate Management"
+   - Subtitle "Set rates per channel per villa"
+   
+   For each villa show a rate table:
+   - Villa name header
+   - Rows: Low Season / Mid Season / 
+     High Season / Super High Season
+   - Columns: Base Rate / Airbnb / 
+     Booking.com / Vrbo / Expedia
+   - Each cell is editable
+   - Markup/discount % shown next to each rate
+   - Color coding: green=higher, red=lower than base
+   - "Apply to all villas" checkbox
+   - "Save Rates" button → updates villas table
+
+4. AVAILABILITY SYNC:
+   - Title "Availability Management"  
+   - Calendar showing blocked/available dates
+   - "Block Dates" button — select date range 
+     and block across all channels
+   - "Open Dates" button — unblock dates
+   - Blocked dates shown in red
+   - Available in green
+   - Booked in gold
+
+5. CHANNEL SETTINGS MODAL:
+   When clicking "Configure" on a channel:
+   - API Key field
+   - Property ID field
+   - Auto-sync toggle (every 15 min)
+   - Auto-update rates toggle
+   - Minimum stay setting
+   - Cancellation policy selector
+   - Save button
+
+6. ICAL IMPORT FUNCTION:
+   Create API route at /api/ical/sync:
+   - Accepts villa_id and ical_url
+   - Fetches the iCal data from the URL
+   - Parses VEVENT entries
+   - For each event:
+     * Creates or updates booking in bookings table
+     * Sets ota_channel based on URL source
+     * Sets status = 'confirmed'
+     * Blocks calendar dates
+   - Returns sync summary:
+     * New bookings added
+     * Updated bookings
+     * Dates blocked
+
+7. AUTO-SYNC:
+   - Add a note: "Auto-sync runs every 15 minutes"
+   - Show sync history log:
+     * Timestamp
+     * Channel
+     * Villa
+     * Result (X new bookings, X updated)
+
+8. Add "Channel Manager" to admin sidebar 
+   as active link
+
+9. Push to GitHub when done:
+   git add . && git commit -m "feat: channel manager with ical sync" && git push
+
+10. Fully responsive for iPad and desktop

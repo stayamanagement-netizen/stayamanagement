@@ -1,0 +1,353 @@
+import { useState } from "react";
+
+const C = {
+  bg: "#F5F0E8",
+  white: "#FFFFFF",
+  gold: "#C9A84C",
+  goldLight: "#F0D98C",
+  text: "#2C2C2C",
+  textMuted: "#8B7355",
+  textLight: "#B5A48A",
+  border: "#E8E0D0",
+  red: "#E53E3E",
+  green: "#38A169",
+};
+
+export default function GuestPortalPreview() {
+  const [page, setPage] = useState("home");
+  const [emergencyType, setEmergencyType] = useState(null);
+  const [emergencyDesc, setEmergencyDesc] = useState("");
+  const [emergencySent, setEmergencySent] = useState(false);
+  const [serviceModal, setServiceModal] = useState(null);
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([
+    { from: "team", text: "Welcome to Villa MATA! We're so happy to have you. Please don't hesitate to reach out for anything you need. 🌴", time: "10:00" }
+  ]);
+
+  const booking = {
+    villa: "Villa MATA",
+    location: "Nusa Lembongan, Bali",
+    checkin: "Tuesday, March 18",
+    checkout: "Tuesday, March 25",
+    nights: 7,
+    guests: 4,
+    ref: "STY-2026-0042",
+    ota: "Airbnb",
+  };
+
+  const services = [
+    { id:1, icon:"🍳", name:"Breakfast at Villa", desc:"Fresh daily breakfast served at your villa", price:"$25", unit:"per person" },
+    { id:2, icon:"🛵", name:"Scooter Rental", desc:"Explore the island on your own", price:"$15", unit:"per day" },
+    { id:3, icon:"🏄", name:"Surf Lessons", desc:"Learn to surf with our expert instructors", price:"$45", unit:"per person" },
+    { id:4, icon:"🧘", name:"Yoga & Wellness", desc:"Morning yoga session at the villa", price:"$30", unit:"per person" },
+    { id:5, icon:"⛵", name:"Boat Island Tour", desc:"Full day island hopping adventure", price:"$65", unit:"per person" },
+    { id:6, icon:"🛒", name:"Grocery Pre-stock", desc:"We'll stock your villa before arrival", price:"$20", unit:"service fee" },
+    { id:7, icon:"🤿", name:"Snorkeling Tour", desc:"Explore beautiful coral reefs", price:"$40", unit:"per person" },
+    { id:8, icon:"🐠", name:"Diving Tour", desc:"Professional guided dive experience", price:"$85", unit:"per person" },
+  ];
+
+  const infoCards = [
+    { icon:"📍", title:"Villa Address", content:"Jl. Coconut Beach No. 12, Nusa Lembongan, Bali 80771" },
+    { icon:"🔑", title:"Check-in Instructions", content:"Key lockbox code: 4521. Pool towels in the cupboard by the entrance. Welcome drink in the fridge!" },
+    { icon:"📶", title:"WiFi", content:"Network: VillaMata_Guest\nPassword: Lembongan2026" },
+    { icon:"🏠", title:"House Rules", content:"No shoes inside · Quiet hours 10pm-8am · No smoking indoors · Max 4 guests" },
+    { icon:"🚗", title:"Parking", content:"Free parking available in front of the villa gate. Please park inside the compound." },
+    { icon:"📞", title:"Emergency Contact", content:"Villa Manager Wayan: +62 812 3456 7890\nAvailable 24/7" },
+  ];
+
+  const [expandedCard, setExpandedCard] = useState(null);
+
+  const NavBar = () => (
+    <div style={{
+      position:"fixed", bottom:0, left:0, right:0,
+      background:C.white, borderTop:`1px solid ${C.border}`,
+      display:"flex", zIndex:100,
+      boxShadow:"0 -4px 20px rgba(0,0,0,0.08)",
+    }}>
+      {[
+        { id:"home", icon:"🏠", label:"Home" },
+        { id:"services", icon:"🛎️", label:"Services" },
+        { id:"messages", icon:"💬", label:"Messages" },
+        { id:"booking", icon:"📋", label:"Booking" },
+        { id:"emergency", icon:"🚨", label:"Help", red:true },
+      ].map(item => (
+        <button key={item.id} onClick={() => { setPage(item.id); setEmergencySent(false); }}
+          style={{
+            flex:1, padding:"10px 4px 14px", border:"none", background:"transparent",
+            cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", gap:3,
+            color: page===item.id ? (item.red ? C.red : C.gold) : item.red ? C.red : C.textLight,
+            fontWeight: page===item.id ? 700 : 400,
+          }}>
+          <span style={{ fontSize:20 }}>{item.icon}</span>
+          <span style={{ fontSize:10, fontFamily:"DM Sans, sans-serif" }}>{item.label}</span>
+          {page===item.id && <div style={{ width:4, height:4, borderRadius:"50%", background: item.red?C.red:C.gold, marginTop:1 }} />}
+        </button>
+      ))}
+    </div>
+  );
+
+  const HomePage = () => (
+    <div style={{ paddingBottom:80 }}>
+      {/* Hero */}
+      <div style={{ background:`linear-gradient(135deg, #8B6914, ${C.gold})`, padding:"32px 20px 24px", color:"white", textAlign:"center" }}>
+        <div style={{ fontSize:40, marginBottom:8 }}>🌴</div>
+        <h1 style={{ fontFamily:"Georgia,serif", fontSize:26, fontWeight:300, margin:"0 0 4px", letterSpacing:"-0.5px" }}>
+          Welcome to {booking.villa}
+        </h1>
+        <p style={{ fontSize:13, opacity:0.85, margin:0 }}>{booking.location}</p>
+      </div>
+
+      <div style={{ padding:"20px 16px", display:"flex", flexDirection:"column", gap:14 }}>
+        {/* Booking card */}
+        <div style={{ background:C.white, borderRadius:14, padding:18, boxShadow:"0 2px 12px rgba(0,0,0,0.06)" }}>
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:14 }}>
+            <h3 style={{ fontFamily:"Georgia,serif", fontSize:16, color:C.text, margin:0 }}>Your Stay</h3>
+            <span style={{ background:`${C.gold}20`, color:C.gold, borderRadius:20, padding:"3px 10px", fontSize:11, fontWeight:700 }}>{booking.ref}</span>
+          </div>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
+            {[
+              ["Check-in", booking.checkin],
+              ["Check-out", booking.checkout],
+              ["Duration", `${booking.nights} nights`],
+              ["Guests", `${booking.guests} guests`],
+            ].map(([label, val]) => (
+              <div key={label} style={{ background:C.bg, borderRadius:8, padding:"10px 12px" }}>
+                <div style={{ fontSize:10, color:C.textLight, textTransform:"uppercase", letterSpacing:"0.5px", marginBottom:3 }}>{label}</div>
+                <div style={{ fontSize:13, fontWeight:600, color:C.text }}>{val}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Info cards */}
+        <h3 style={{ fontFamily:"Georgia,serif", fontSize:16, color:C.text, margin:"4px 0 0" }}>Villa Information</h3>
+        {infoCards.map((card, i) => (
+          <div key={i} onClick={() => setExpandedCard(expandedCard===i?null:i)}
+            style={{ background:C.white, borderRadius:12, overflow:"hidden", boxShadow:"0 2px 8px rgba(0,0,0,0.05)", cursor:"pointer" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:12, padding:"14px 16px" }}>
+              <span style={{ fontSize:22 }}>{card.icon}</span>
+              <span style={{ flex:1, fontSize:14, fontWeight:600, color:C.text }}>{card.title}</span>
+              <span style={{ color:C.gold, fontSize:18 }}>{expandedCard===i?"▲":"▼"}</span>
+            </div>
+            {expandedCard===i && (
+              <div style={{ padding:"0 16px 16px 50px", fontSize:13, color:C.textMuted, lineHeight:1.6, whiteSpace:"pre-line" }}>
+                {card.content}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const ServicesPage = () => (
+    <div style={{ padding:"20px 16px 80px" }}>
+      <h2 style={{ fontFamily:"Georgia,serif", fontSize:22, color:C.text, margin:"0 0 4px" }}>Enhance Your Stay</h2>
+      <p style={{ color:C.textMuted, fontSize:13, margin:"0 0 20px" }}>Order services delivered to your villa</p>
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
+        {services.map(s => (
+          <div key={s.id} style={{ background:C.white, borderRadius:14, padding:16, boxShadow:"0 2px 10px rgba(0,0,0,0.06)" }}>
+            <div style={{ fontSize:32, marginBottom:8 }}>{s.icon}</div>
+            <div style={{ fontSize:13, fontWeight:700, color:C.text, marginBottom:4 }}>{s.name}</div>
+            <div style={{ fontSize:11, color:C.textMuted, marginBottom:10, lineHeight:1.4 }}>{s.desc}</div>
+            <div style={{ fontSize:14, fontWeight:800, color:C.gold, marginBottom:10 }}>{s.price}<span style={{ fontSize:10, fontWeight:400, color:C.textLight }}>/{s.unit.split(" ")[1]||s.unit}</span></div>
+            <button onClick={() => setServiceModal(s)}
+              style={{ width:"100%", background:C.gold, color:"white", border:"none", borderRadius:8, padding:"8px", fontSize:12, fontWeight:700, cursor:"pointer" }}>
+              Book Now
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {serviceModal && (
+        <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.5)", zIndex:200, display:"flex", alignItems:"flex-end" }}>
+          <div style={{ background:C.white, borderRadius:"20px 20px 0 0", padding:24, width:"100%", maxHeight:"80vh", overflowY:"auto" }}>
+            <div style={{ fontSize:40, textAlign:"center", marginBottom:8 }}>{serviceModal.icon}</div>
+            <h3 style={{ fontFamily:"Georgia,serif", fontSize:20, textAlign:"center", color:C.text, margin:"0 0 20px" }}>{serviceModal.name}</h3>
+            <div style={{ display:"flex", flexDirection:"column", gap:12, marginBottom:20 }}>
+              {[["Date","date"],["Time","time"],["Number of persons","number"]].map(([label, type]) => (
+                <div key={label}>
+                  <label style={{ fontSize:11, fontWeight:700, color:C.textMuted, textTransform:"uppercase", letterSpacing:"0.5px", display:"block", marginBottom:5 }}>{label}</label>
+                  <input type={type} style={{ width:"100%", background:C.bg, border:`1px solid ${C.border}`, borderRadius:8, padding:"10px 12px", fontSize:13, fontFamily:"inherit", color:C.text, outline:"none" }} />
+                </div>
+              ))}
+              <div>
+                <label style={{ fontSize:11, fontWeight:700, color:C.textMuted, textTransform:"uppercase", letterSpacing:"0.5px", display:"block", marginBottom:5 }}>Special Requests</label>
+                <textarea style={{ width:"100%", background:C.bg, border:`1px solid ${C.border}`, borderRadius:8, padding:"10px 12px", fontSize:13, fontFamily:"inherit", color:C.text, outline:"none", height:80, resize:"none" }} placeholder="Any special requirements..." />
+              </div>
+            </div>
+            <div style={{ display:"flex", gap:10 }}>
+              <button onClick={() => setServiceModal(null)} style={{ flex:1, background:C.bg, border:`1px solid ${C.border}`, borderRadius:10, padding:12, fontSize:14, fontWeight:600, color:C.textMuted, cursor:"pointer" }}>Cancel</button>
+              <button onClick={() => { setServiceModal(null); alert("Service booked! Our team will confirm shortly."); }}
+                style={{ flex:2, background:C.gold, border:"none", borderRadius:10, padding:12, fontSize:14, fontWeight:700, color:"white", cursor:"pointer" }}>
+                Confirm & Book
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  const MessagesPage = () => (
+    <div style={{ display:"flex", flexDirection:"column", height:"calc(100vh - 60px)" }}>
+      <div style={{ padding:"16px 16px 12px", borderBottom:`1px solid ${C.border}`, background:C.white }}>
+        <h2 style={{ fontFamily:"Georgia,serif", fontSize:18, color:C.text, margin:0 }}>Messages</h2>
+        <p style={{ color:C.textMuted, fontSize:12, margin:"2px 0 0" }}>Chat with your villa team</p>
+      </div>
+      <div style={{ flex:1, overflowY:"auto", padding:16, display:"flex", flexDirection:"column", gap:10, background:C.bg }}>
+        {messages.map((m, i) => (
+          <div key={i} style={{ display:"flex", justifyContent: m.from==="guest"?"flex-end":"flex-start" }}>
+            <div style={{
+              maxWidth:"75%", padding:"10px 14px", borderRadius: m.from==="guest"?"14px 14px 3px 14px":"14px 14px 14px 3px",
+              background: m.from==="guest" ? C.gold : C.white,
+              color: m.from==="guest" ? "white" : C.text,
+              boxShadow:"0 1px 4px rgba(0,0,0,0.08)", fontSize:13, lineHeight:1.5,
+            }}>
+              {m.from==="team" && <div style={{ fontSize:10, fontWeight:700, color:C.gold, marginBottom:4 }}>Villa Team 🌴</div>}
+              {m.text}
+              <div style={{ fontSize:10, opacity:0.6, marginTop:4, textAlign:"right" }}>{m.time}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ padding:12, background:C.white, borderTop:`1px solid ${C.border}`, display:"flex", gap:8, paddingBottom:80 }}>
+        <input value={message} onChange={e=>setMessage(e.target.value)}
+          placeholder="Type a message..."
+          style={{ flex:1, background:C.bg, border:`1px solid ${C.border}`, borderRadius:20, padding:"10px 16px", fontSize:13, fontFamily:"inherit", color:C.text, outline:"none" }}
+        />
+        <button onClick={() => { if(message.trim()){ setMessages([...messages, { from:"guest", text:message, time:new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}) }]); setMessage(""); }}}
+          style={{ width:40, height:40, borderRadius:"50%", background:C.gold, border:"none", cursor:"pointer", fontSize:18, display:"flex", alignItems:"center", justifyContent:"center" }}>
+          ➤
+        </button>
+      </div>
+    </div>
+  );
+
+  const BookingPage = () => (
+    <div style={{ padding:"20px 16px 80px" }}>
+      <h2 style={{ fontFamily:"Georgia,serif", fontSize:22, color:C.text, margin:"0 0 20px" }}>My Booking</h2>
+      <div style={{ background:C.white, borderRadius:14, padding:20, boxShadow:"0 2px 12px rgba(0,0,0,0.06)", marginBottom:14 }}>
+        <h3 style={{ fontFamily:"Georgia,serif", fontSize:16, color:C.text, margin:"0 0 14px" }}>Booking Details</h3>
+        {[["Reference", booking.ref],["Villa", booking.villa],["Location", booking.location],["Check-in", booking.checkin],["Check-out", booking.checkout],["Duration", `${booking.nights} nights`],["Guests", `${booking.guests} guests`],["Booked via", booking.ota]].map(([k,v]) => (
+          <div key={k} style={{ display:"flex", justifyContent:"space-between", padding:"8px 0", borderBottom:`1px solid ${C.border}` }}>
+            <span style={{ fontSize:12, color:C.textMuted }}>{k}</span>
+            <span style={{ fontSize:13, fontWeight:600, color:C.text }}>{v}</span>
+          </div>
+        ))}
+      </div>
+      <div style={{ background:C.white, borderRadius:14, padding:20, boxShadow:"0 2px 12px rgba(0,0,0,0.06)", marginBottom:14 }}>
+        <h3 style={{ fontFamily:"Georgia,serif", fontSize:16, color:C.text, margin:"0 0 14px" }}>Payment Status</h3>
+        <div style={{ display:"flex", alignItems:"center", gap:10, padding:"12px 14px", background:`${C.green}10`, borderRadius:10, border:`1px solid ${C.green}30` }}>
+          <span style={{ fontSize:20 }}>✅</span>
+          <div>
+            <div style={{ fontSize:13, fontWeight:700, color:C.green }}>Payment Confirmed</div>
+            <div style={{ fontSize:11, color:C.textMuted }}>Full payment received · $1,995</div>
+          </div>
+        </div>
+      </div>
+      <div style={{ background:C.white, borderRadius:14, padding:20, boxShadow:"0 2px 12px rgba(0,0,0,0.06)" }}>
+        <h3 style={{ fontFamily:"Georgia,serif", fontSize:16, color:C.text, margin:"0 0 14px" }}>Timeline</h3>
+        {[["✅","Booking Confirmed","March 10, 2026"],["✅","Payment Received","March 10, 2026"],["🔜","Check-in","March 18, 2026"],["🔜","Check-out","March 25, 2026"]].map(([icon,label,date],i) => (
+          <div key={i} style={{ display:"flex", gap:12, marginBottom:i<3?16:0 }}>
+            <div style={{ display:"flex", flexDirection:"column", alignItems:"center" }}>
+              <span style={{ fontSize:18 }}>{icon}</span>
+              {i<3 && <div style={{ width:2, height:20, background:C.border, margin:"4px 0" }} />}
+            </div>
+            <div>
+              <div style={{ fontSize:13, fontWeight:600, color:C.text }}>{label}</div>
+              <div style={{ fontSize:11, color:C.textMuted }}>{date}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const EmergencyPage = () => (
+    <div style={{ padding:"20px 16px 80px", minHeight:"calc(100vh - 60px)", background: emergencySent ? "#FFF5F5" : C.bg }}>
+      {!emergencySent ? (
+        <>
+          <div style={{ textAlign:"center", marginBottom:24 }}>
+            <div style={{ fontSize:48, marginBottom:8 }}>🚨</div>
+            <h2 style={{ fontFamily:"Georgia,serif", fontSize:22, color:C.red, margin:"0 0 6px" }}>Emergency Assistance</h2>
+            <p style={{ color:C.textMuted, fontSize:13, margin:0 }}>Our team will respond within 5-10 minutes</p>
+          </div>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:20 }}>
+            {[["🏥","Medical Emergency","medical"],["🔒","Security Issue","security"],["🔥","Fire","fire"],["💧","Flood/Water","flood"],["⚠️","Accident","accident"],["📋","Other Issue","other"]].map(([icon,label,type]) => (
+              <button key={type} onClick={() => setEmergencyType(type)}
+                style={{
+                  background: emergencyType===type ? `${C.red}15` : C.white,
+                  border: `2px solid ${emergencyType===type ? C.red : C.border}`,
+                  borderRadius:12, padding:"14px 10px", cursor:"pointer",
+                  display:"flex", flexDirection:"column", alignItems:"center", gap:6,
+                }}>
+                <span style={{ fontSize:28 }}>{icon}</span>
+                <span style={{ fontSize:12, fontWeight:600, color: emergencyType===type ? C.red : C.text, textAlign:"center" }}>{label}</span>
+              </button>
+            ))}
+          </div>
+          <div style={{ marginBottom:16 }}>
+            <label style={{ fontSize:11, fontWeight:700, color:C.textMuted, textTransform:"uppercase", letterSpacing:"0.5px", display:"block", marginBottom:6 }}>Describe the situation</label>
+            <textarea value={emergencyDesc} onChange={e=>setEmergencyDesc(e.target.value)}
+              placeholder="Please describe what's happening clearly..."
+              style={{ width:"100%", background:C.white, border:`2px solid ${emergencyType ? C.red+"44" : C.border}`, borderRadius:10, padding:"12px 14px", fontSize:13, fontFamily:"inherit", color:C.text, outline:"none", height:100, resize:"none" }}
+            />
+          </div>
+          <div style={{ background:C.white, borderRadius:12, padding:"12px 16px", marginBottom:16, border:`1px solid ${C.border}` }}>
+            <div style={{ fontSize:11, color:C.textMuted, marginBottom:2 }}>YOUR LOCATION</div>
+            <div style={{ fontSize:13, fontWeight:600, color:C.text }}>Villa MATA · Nusa Lembongan, Bali</div>
+          </div>
+          <button
+            onClick={() => { if(emergencyType && emergencyDesc) setEmergencySent(true); }}
+            disabled={!emergencyType || !emergencyDesc}
+            style={{
+              width:"100%", background: emergencyType && emergencyDesc ? C.red : "#ccc",
+              color:"white", border:"none", borderRadius:12, padding:16,
+              fontSize:16, fontWeight:700, cursor: emergencyType && emergencyDesc ? "pointer" : "not-allowed",
+              marginBottom:12,
+            }}>
+            🚨 Send Emergency Alert
+          </button>
+          <div style={{ textAlign:"center" }}>
+            <a href="tel:+6281234567890" style={{ color:C.red, fontSize:14, fontWeight:600, textDecoration:"none" }}>
+              📞 Call Villa Manager Now
+            </a>
+          </div>
+        </>
+      ) : (
+        <div style={{ textAlign:"center", paddingTop:40 }}>
+          <div style={{ fontSize:60, marginBottom:16 }}>✅</div>
+          <h2 style={{ fontFamily:"Georgia,serif", fontSize:24, color:C.green, margin:"0 0 12px" }}>Alert Sent!</h2>
+          <p style={{ color:C.text, fontSize:15, lineHeight:1.6, margin:"0 0 24px" }}>
+            Your villa manager and our team have been notified immediately.
+          </p>
+          <div style={{ background:C.white, borderRadius:14, padding:20, marginBottom:20, boxShadow:"0 2px 12px rgba(0,0,0,0.06)" }}>
+            <div style={{ fontSize:13, color:C.textMuted, marginBottom:6 }}>Expected response time</div>
+            <div style={{ fontSize:28, fontWeight:700, color:C.text, fontFamily:"Georgia,serif" }}>5-10 minutes</div>
+          </div>
+          <a href="tel:+6281234567890"
+            style={{ display:"block", background:C.red, color:"white", borderRadius:12, padding:16, fontSize:15, fontWeight:700, textDecoration:"none", marginBottom:12 }}>
+            📞 Call Villa Manager Directly
+          </a>
+          <button onClick={() => { setPage("home"); setEmergencySent(false); setEmergencyType(null); setEmergencyDesc(""); }}
+            style={{ background:"transparent", border:`1px solid ${C.border}`, borderRadius:12, padding:"12px 24px", fontSize:14, color:C.textMuted, cursor:"pointer" }}>
+            Back to Home
+          </button>
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <div style={{ fontFamily:"'DM Sans', sans-serif", background:C.bg, maxWidth:390, margin:"0 auto", minHeight:"100vh", position:"relative", overflow:"hidden" }}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap'); * { box-sizing: border-box; margin: 0; padding: 0; }`}</style>
+      {page === "home" && <HomePage />}
+      {page === "services" && <ServicesPage />}
+      {page === "messages" && <MessagesPage />}
+      {page === "booking" && <BookingPage />}
+      {page === "emergency" && <EmergencyPage />}
+      <NavBar />
+    </div>
+  );
+}

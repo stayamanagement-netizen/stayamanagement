@@ -1,0 +1,5 @@
+{
+  "framework": "nextjs",
+  "installCommand": "npm install -g pnpm@10.26.1 && pnpm install --no-frozen-lockfile",
+  "buildCommand": "pnpm --filter @workspace/nextjs-app run build"
+}

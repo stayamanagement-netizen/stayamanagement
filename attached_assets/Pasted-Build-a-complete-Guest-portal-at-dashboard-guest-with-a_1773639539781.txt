@@ -1,0 +1,122 @@
+Build a complete Guest portal at /dashboard/guest
+with an elegant luxury feel — warm beige, gold accents,
+clean and mobile-first since guests use phones/iPads.
+
+IMPORTANT: Guests log in via Magic Link only.
+They can ONLY see their own booking data.
+
+1. GUEST DASHBOARD — main page:
+   - Large welcoming header:
+     "Welcome to [Villa Name] 🌴"
+     "We're delighted to have you, [Guest Name]"
+   - Booking summary card (prominent, top of page):
+     * Check-in date with day name
+     * Check-out date with day name  
+     * Number of nights
+     * Number of guests
+     * Booking reference number
+     * OTA channel badge
+
+   - QUICK INFO CARDS (tap to expand):
+     * 📍 Villa Address & Google Maps link
+     * 🔑 Check-in Instructions
+     * 📶 WiFi Name & Password
+     * 🏠 House Rules
+     * 🚗 Parking Instructions
+     * 📞 Emergency Contact (villa manager phone)
+
+   - BOTTOM NAVIGATION BAR (mobile-style):
+     * 🏠 Home
+     * 🛎️ Services
+     * 💬 Messages
+     * 📋 My Booking
+     * 🚨 Emergency (red)
+
+2. SERVICES PAGE (/dashboard/guest/services):
+   - Title: "Enhance Your Stay"
+   - Subtitle: "Order services delivered to your villa"
+   - Service cards in elegant grid:
+     * 🍳 Breakfast & Meals at the Villa
+     * 🛵 Scooter / Car Rental
+     * 🏄 Surf Lessons
+     * 🧘 Yoga / Wellness
+     * ⛵ Boat / Island Tour
+     * 🛒 Grocery Pre-stocking
+     * 🤿 Snorkeling Tour
+     * 🐠 Diving Tour
+   - Each card shows:
+     * Service icon + name
+     * Price per person / per day
+     * "Book Now" gold button
+   - Booking modal:
+     * Date selector
+     * Time selector
+     * Number of persons
+     * Special requests text field
+     * Total price calculator
+     * "Confirm & Pay" button
+     * Saves to service_orders table
+
+3. MESSAGES PAGE (/dashboard/guest/messages):
+   - Clean chat interface
+   - Shows conversation with villa team
+   - Guest can send messages
+   - Shows who replied (Villa Manager / Admin)
+   - OTA channel indicator
+   - Saves to messages table
+
+4. MY BOOKING PAGE (/dashboard/guest/booking):
+   - Full booking details
+   - Payment status
+   - If payment pending → show payment options:
+     * Pay with Stripe (card)
+     * Pay via Bank Transfer (show details)
+   - Booking timeline:
+     * Booking confirmed ✅
+     * Payment received ✅
+     * Check-in approaching 🔜
+     * Check-out 🔜
+
+5. 🚨 EMERGENCY PAGE (/dashboard/guest/emergency):
+   - Full screen red-tinted page
+   - Large warning icon
+   - Title: "Emergency Assistance"
+   - Subtitle: "Our team will respond within 5-10 minutes"
+   - Alert type selector (large tap-friendly buttons):
+     🏥 Medical Emergency
+     🔒 Security Issue
+     🔥 Fire
+     💧 Flood / Water Damage
+     ⚠️ Accident
+     📋 Other Urgent Issue
+   - Large description text area:
+     "Describe your situation clearly..."
+   - Villa name pre-filled
+   - "Send Emergency Alert" — large RED button
+   - On submit:
+     * Save to emergency_alerts table
+     * Link to their booking_id and villa_id
+     * Show confirmation screen:
+       "✅ Alert Sent Successfully"
+       "Your villa manager and our team 
+        have been notified immediately"
+       "Expected response time: 5-10 minutes"
+       "Manager contact: [phone number]"
+   - Also show direct call button:
+     📞 "Call Villa Manager Now"
+
+6. PROTECT this route:
+   - If not logged in → redirect to /
+   - If role is not guest → redirect to correct dashboard
+   - Guest can ONLY see their own booking data
+
+7. DESIGN — luxury mobile-first:
+   - Warm beige background (#F5F0E8)
+   - White cards with soft shadows
+   - Gold accents (#C9A84C)
+   - Large friendly fonts
+   - Big tap targets for mobile
+   - Smooth transitions between pages
+   - Bottom nav bar fixed at bottom
+
+8. Fully responsive — optimized for phone and iPad

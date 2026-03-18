@@ -1,0 +1,110 @@
+Build a complete Bookings module with the same 
+elegant beige and gold theme.
+
+1. ADMIN BOOKINGS PAGE (/dashboard/admin/bookings):
+   
+   HEADER:
+   - Title "Bookings" with total count
+   - "Add New Booking" gold button
+   - Search bar (search by guest name or villa)
+   - Filters: All / Confirmed / Pending / 
+     Cancelled / Completed
+   - Filter by OTA: All / Airbnb / Booking.com / 
+     Vrbo / Expedia / Direct
+   - Filter by Villa dropdown
+   - Filter by date range
+
+   STATS ROW:
+   - Total Bookings
+   - Confirmed
+   - Pending
+   - Revenue This Month
+
+   BOOKINGS TABLE:
+   - Columns: Booking ID, Guest Name, Villa, 
+     Check-in, Check-out, Nights, Guests,
+     OTA Channel, Total Amount, Status, 
+     Payment Status, Actions
+   - OTA badge colored per channel
+   - Status badge: green=confirmed, 
+     orange=pending, red=cancelled
+   - Payment badge: green=paid, red=unpaid
+   - Actions: View / Edit / Cancel
+   - Row click opens booking detail
+
+   BOOKING DETAIL MODAL:
+   - Full booking information
+   - Guest details
+   - Villa details
+   - Payment status
+   - Timeline of booking events
+   - Internal notes field
+   - Action buttons:
+     * Confirm booking
+     * Send confirmation email
+     * Send payment link
+     * Cancel booking
+     * Add note
+
+   ADD NEW BOOKING MODAL:
+   - Guest name (text)
+   - Guest email (text)
+   - Guest phone (text)
+   - Number of adults
+   - Number of children
+   - Villa selector (dropdown from villas table)
+   - Check-in date picker
+   - Check-out date picker
+   - Auto-calculate nights
+   - Auto-calculate total based on seasonal rates
+   - OTA channel selector
+   - OTA booking reference
+   - Notes
+   - Save → insert into bookings table
+
+2. BOOKING CALENDAR VIEW:
+   - Toggle between Table view and Calendar view
+   - Calendar shows all villas as rows
+   - Days as columns (current month)
+   - Color coded by OTA channel
+   - Click on booking to see details
+   - Click on empty cell to add booking
+
+3. VILLA MANAGER BOOKINGS (/dashboard/manager/bookings):
+   - Same table but filtered to their villa only
+   - Can VIEW bookings
+   - Cannot add or edit bookings
+   - Shows today's arrivals highlighted in gold
+   - Shows today's departures highlighted
+
+4. VILLA OWNER BOOKINGS (/dashboard/owner/bookings):
+   - Same table filtered to their villa
+   - View only
+   - No guest personal details
+   - Shows booking dates, nights, OTA, amount
+   - No guest names — privacy protected
+
+5. GUEST BOOKING VIEW (/dashboard/guest/booking):
+   - Their own booking only
+   - Full details of their stay
+   - Payment status
+   - Check-in instructions link
+   - Timeline: Confirmed → Paid → Check-in → Check-out
+
+6. AUTO-CALCULATE RATES:
+   When admin selects villa + dates:
+   - Check which season the dates fall in
+   - Apply correct seasonal rate automatically
+   - Show rate breakdown:
+     * X nights × $Y per night = $Z
+     * Spare bed if selected
+     * Total amount
+
+7. Fetch all bookings from Supabase bookings table
+   with joins to villas and profiles tables
+
+8. Push to GitHub when done:
+   git add . && git commit -m "feat: bookings module" 
+   && git push
+
+9. Fully responsive for iPad and desktop

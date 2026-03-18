@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Next.js App"
+version = "1.0.0"
+id = "artifacts/nextjs-app"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+localPort = 19344
+name = "web"
+paths = ["/"]
+
+[services.development]
+run = "pnpm --filter @workspace/nextjs-app run dev"
+
+[services.env]
+PORT = "19344"
+BASE_PATH = "/"
+
+[services.production]
+build = ["pnpm", "--filter", "@workspace/nextjs-app", "run", "build"]
+publicDir = "artifacts/nextjs-app/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"

@@ -1,0 +1,108 @@
+Build a complete Villa Manager portal at /dashboard/manager
+with the same elegant beige and gold theme.
+
+This portal is for villa managers on the ground.
+They CANNOT see any income or revenue data.
+
+1. TOP NAVIGATION:
+   - "Staya Management" logo left
+   - Current date center  
+   - Manager name + Logout right
+
+2. LEFT SIDEBAR:
+   - Dashboard (home)
+   - My Villa (building)
+   - Bookings (calendar) — view only
+   - Guest Messages (chat) — read + reply
+   - Petty Cash (wallet) — submit + view own
+   - Maintenance (tools) — submit + track
+   - Services (star) — view & confirm orders
+   - Settings (gear)
+
+3. MANAGER DASHBOARD:
+   - Welcome: "Welcome, [Manager Name]"
+   - Villa name as subtitle
+   - 4 STAT CARDS:
+     * Today's Check-ins
+     * Today's Check-outs
+     * Pending Service Orders
+     * Open Maintenance Issues
+   
+   - TODAY'S SCHEDULE:
+     * List of today's arrivals with:
+       - Guest initials (no full name)
+       - Check-in time
+       - Number of guests
+       - Special requests
+     * List of today's departures
+
+   - PENDING SERVICE ORDERS:
+     * Service name, Date, Time, Persons
+     * Confirm / Complete buttons
+
+   - UNREAD GUEST MESSAGES:
+     * Guest initials, message preview
+     * Reply button
+
+4. PETTY CASH PAGE at /dashboard/manager/petty-cash:
+   - "Submit New Expense" gold button
+   - Form modal:
+     * Category dropdown:
+       - Cleaning supplies
+       - Maintenance & repairs
+       - Garden & pool
+       - Guest supplies
+       - Groceries
+       - Utilities
+       - Other
+     * Description (text)
+     * Amount + currency
+     * Date
+     * Receipt photo upload
+     * Submit button → saves to petty_cash table
+       with status = pending
+   
+   - MY SUBMISSIONS table:
+     * Date, Category, Description, Amount, Status
+     * Status badge: pending/approved/rejected
+     * Cannot edit after submission
+
+5. MAINTENANCE PAGE at /dashboard/manager/maintenance:
+   - "Report New Issue" gold button
+   - Form modal:
+     * Title
+     * Category:
+       - Plumbing
+       - Electrical
+       - Appliance
+       - Pool & garden
+       - Structural
+       - Other
+     * Priority: Low / Medium / High / Urgent
+     * Description
+     * Upload photos (multiple)
+     * Estimated cost (optional)
+     * Submit → saves to maintenance table
+       with status = open
+   
+   - ACTIVE ISSUES list:
+     * Title, Category, Priority badge, Status, Date
+     * View details button
+     * Cannot close own issues (admin closes them)
+
+6. GUEST MESSAGES at /dashboard/manager/messages:
+   - Same inbox UI as admin but filtered to their villa
+   - Can read all messages for their villa
+   - Can reply directly to guests
+   - When manager replies:
+     * Save to messages table with sender_role = villa_manager
+     * Set admin_notified = false (trigger notification to admin)
+   - Show OTA channel badge on each message
+
+7. PROTECT this route:
+   - If not logged in → redirect to /
+   - If role is not villa_manager → redirect to correct dashboard
+   - Manager can ONLY see data for villas linked to them
+     via villa_managers table
+
+8. Fully responsive for iPad and desktop
